@@ -1,4 +1,5 @@
 #include<iostream>
+#include<memory>
 
 template<typename T> class UniquePtr {
 
@@ -14,11 +15,10 @@ public:
     UniquePtr(const UniquePtr&) = delete;
     UniquePtr& operator=(const UniquePtr&) = delete;
 
-    //Move constructor
+    // Move constructor
     //
     //
     // SOON COMING...
-    //
     //
     //
 
@@ -41,22 +41,30 @@ private:
 
 class Weapon {
 public:
-    Weapon() {
-        std::cout << "Weapon created\n";
+    Weapon(const std::string& weapon) : weapon(weapon){
+        std::cout << "Weapon created: " << weapon << "\n";
     }
-
     ~Weapon() {
-        std::cout << "Weapon destroyed\n";
+        std::cout << "Weapon destroyed: " << weapon << "\n";
     }
     void shoot() {
-        std::cout << "Bang!\n";
+        std::cout << "Bang!" << "\n";
     }
+private:
+    std::string weapon;
 };
 
 int main() {
-    UniquePtr<Weapon> gun(new Weapon());
-    gun->shoot();
+    UniquePtr<Weapon> axe(new Weapon("axe"));
 
+    {
+        UniquePtr<Weapon> gun(new Weapon("gun"));
+        gun->shoot();
+    }
+
+    {
+        axe->shoot();
+    }
     std::cin.get();
 }
 
